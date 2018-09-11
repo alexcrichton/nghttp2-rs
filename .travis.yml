@@ -1,0 +1,14 @@
+language: rust
+sudo: false
+
+matrix:
+  include:
+    - rust: stable
+    - rust: beta
+    - rust: nightly
+    - os: osx
+script:
+  - cargo test
+notifications:
+  email:
+    on_success: never
