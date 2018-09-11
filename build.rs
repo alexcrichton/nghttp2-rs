@@ -7,6 +7,7 @@ use std::path::PathBuf;
 const VERSION: &str = "1.33.90";
 
 fn main() {
+    let target = env::var("TARGET").unwrap();
     let out_dir = PathBuf::from(env::var_os("OUT_DIR").unwrap());
     let ver = fs::read_to_string("nghttp2/lib/includes/nghttp2/nghttp2ver.h.in")
         .unwrap()
@@ -48,9 +49,21 @@ fn main() {
        .file("nghttp2/lib/nghttp2_version.c")
        .warnings(false)
        .define("NGHTTP2_STATICLIB", None)
-       .define("HAVE_ARPA_INET_H", None)
        .define("HAVE_NETINET_IN", None)
        .out_dir(&lib);
+
+    if target.contains("windows") {
+        // Apparently MSVC doesn't have `ssize_t` defined as a type
+        if target.contains("msvc") {
+            match &env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap()[..] {
+                "64" => { cfg.define("ssize_t", "int64_t"); }
+                "32" => { cfg.define("ssize_t", "int32_t"); }
+                s => panic!("unknown pointer size: {}", s),
+            }
+        }
+    } else {
+       cfg.define("HAVE_ARPA_INET_H", None);
+    }
     cfg.compile("nghttp2");
 
     println!("cargo:root={}", install.display());
