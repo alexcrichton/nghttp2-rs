@@ -11,6 +11,9 @@ description = """
 FFI bindings for libnghttp2 (nghttp2)
 """
 
+[lib]
+doctest = false
+
 [workspace]
 members = ['systest']
 
