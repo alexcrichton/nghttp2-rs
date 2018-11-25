@@ -1,11 +1,7 @@
-extern crate nghttp2_sys;
-
-extern {
-    fn nghttp2_version(input: i32) -> *const u8;
-}
+extern crate libnghttp2_sys as ffi;
 
 fn main() {
     unsafe {
-        nghttp2_version(0);
+        ffi::nghttp2_version(0);
     }
 }
