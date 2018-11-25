@@ -6,6 +6,34 @@ libnghttp2).
 [![Build Status](https://travis-ci.com/alexcrichton/nghttp2-rs.svg?branch=master)](https://travis-ci.com/alexcrichton/nghttp2-rs)
 [![Build status](https://ci.appveyor.com/api/projects/status/6au13yb0fkfckpjn/branch/master?svg=true)](https://ci.appveyor.com/project/alexcrichton/nghttp2-rs/branch/master)
 
+## Generating bindings
+
+Before `bindgen`:
+
+* Copy `nghttp2ver.h.in` to `nghttp2ver.h`
+* Edit `nghttp2ver.h` to remove `@FOO@`, replacing with 0
+
+```sh
+$ bindgen \
+  ./nghttp2/lib/includes/nghttp2/nghttp2.h \
+  -o src/lib.rs \
+  --no-layout-tests \
+  --distrust-clang-mangling \
+  --no-prepend-enum-name \
+  --rustfmt-bindings \
+  --whitelist-function '.*nghttp2.*' \
+  --whitelist-type '.*nghttp2.*' \
+  --whitelist-var '.*nghttp2.*' \
+  -- \
+  -I ./nghttp2/lib/includes
+```
+
+Afterwards
+
+* Remove `*vprintf*`
+* Remove `va_list`-related things
+* Add `#![allow(bad_style)]`
+
 # License
 
 This project is licensed under either of
