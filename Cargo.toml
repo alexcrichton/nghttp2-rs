@@ -1,6 +1,6 @@
 [package]
 name = "libnghttp2-sys"
-version = "0.1.1"
+version = "0.1.2"
 authors = ["Alex Crichton <alex@alexcrichton.com>"]
 links = 'nghttp2'
 license = "MIT/Apache-2.0"
