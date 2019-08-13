@@ -22,6 +22,3 @@ libc = '0.2'
 
 [build-dependencies]
 cc = "1.0.24"
-
-[patch.crates-io]
-ctest = { git = 'https://github.com/alexcrichton/ctest', branch = 'wut' }
