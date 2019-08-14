@@ -7,6 +7,16 @@ fn main() {
     let target = env::var("TARGET").unwrap();
     let root = PathBuf::from(env::var_os("DEP_NGHTTP2_ROOT").unwrap());
     let mut cfg = ctest::TestGenerator::new();
+
+    // Apparently MSVC doesn't have `ssize_t` defined as a type
+    if target.contains("msvc") {
+        match env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap().as_str() {
+            "64" => { cfg.define("ssize_t", Some("int64_t")); }
+            "32" => { cfg.define("ssize_t", Some("int32_t")); }
+            s => panic!("unknown pointer size: {}", s),
+        }
+    }
+
     cfg.header("nghttp2/nghttp2.h")
         .include(root.join("include"))
         .type_name(|n, _is_struct, _is_union| {
@@ -28,16 +38,12 @@ fn main() {
             } else {
                 field.to_string()
             }
+        })
+        .skip_signededness(move |_ty| {
+            // skip signededness checks on MSVC since lots of enums switch, and
+            // it doesn't really matter that much anyway
+            target.contains("msvc")
         });
-
-    // Apparently MSVC doesn't have `ssize_t` defined as a type
-    if target.contains("msvc") {
-        match env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap().as_str() {
-            "64" => { cfg.define("ssize_t", Some("int64_t")); }
-            "32" => { cfg.define("ssize_t", Some("int32_t")); }
-            s => panic!("unknown pointer size: {}", s),
-        }
-    }
 
     cfg.generate("../src/lib.rs", "all.rs");
 }
