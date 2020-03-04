@@ -11,26 +11,28 @@ fn main() {
     // Apparently MSVC doesn't have `ssize_t` defined as a type
     if target.contains("msvc") {
         match env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap().as_str() {
-            "64" => { cfg.define("ssize_t", Some("int64_t")); }
-            "32" => { cfg.define("ssize_t", Some("int32_t")); }
+            "64" => {
+                cfg.define("ssize_t", Some("int64_t"));
+            }
+            "32" => {
+                cfg.define("ssize_t", Some("int32_t"));
+            }
             s => panic!("unknown pointer size: {}", s),
         }
     }
 
     cfg.header("nghttp2/nghttp2.h")
         .include(root.join("include"))
-        .type_name(|n, _is_struct, _is_union| {
-            n.to_string()
-        })
+        .type_name(|n, _is_struct, _is_union| n.to_string())
         .skip_struct(|name| {
             // TODO: dox
-            name == "nghttp2_session" ||
-            name == "nghttp2_rcbuf" ||
-            name == "nghttp2_session_callbacks" ||
-            name == "nghttp2_option" ||
-            name == "nghttp2_hd_deflater" ||
-            name == "nghttp2_hd_inflater" ||
-            name == "nghttp2_stream"
+            name == "nghttp2_session"
+                || name == "nghttp2_rcbuf"
+                || name == "nghttp2_session_callbacks"
+                || name == "nghttp2_option"
+                || name == "nghttp2_hd_deflater"
+                || name == "nghttp2_hd_inflater"
+                || name == "nghttp2_stream"
         })
         .field_name(|_struct, field| {
             if field == "type_" {

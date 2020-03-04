@@ -1801,8 +1801,10 @@ extern "C" {
 /// Custom memory allocator to replace malloc().  The |mem_user_data|
 /// is the mem_user_data member of :type:`nghttp2_mem` structure.
 pub type nghttp2_malloc = ::std::option::Option<
-    unsafe extern "C" fn(size: usize, mem_user_data: *mut ::std::os::raw::c_void)
-        -> *mut ::std::os::raw::c_void,
+    unsafe extern "C" fn(
+        size: usize,
+        mem_user_data: *mut ::std::os::raw::c_void,
+    ) -> *mut ::std::os::raw::c_void,
 >;
 /// @functypedef
 ///
@@ -1819,8 +1821,11 @@ pub type nghttp2_free = ::std::option::Option<
 /// Custom memory allocator to replace calloc().  The |mem_user_data|
 /// is the mem_user_data member of :type:`nghttp2_mem` structure.
 pub type nghttp2_calloc = ::std::option::Option<
-    unsafe extern "C" fn(nmemb: usize, size: usize, mem_user_data: *mut ::std::os::raw::c_void)
-        -> *mut ::std::os::raw::c_void,
+    unsafe extern "C" fn(
+        nmemb: usize,
+        size: usize,
+        mem_user_data: *mut ::std::os::raw::c_void,
+    ) -> *mut ::std::os::raw::c_void,
 >;
 /// @functypedef
 ///

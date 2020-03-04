@@ -24,45 +24,49 @@ fn main() {
 
     let mut cfg = cc::Build::new();
     cfg.include("nghttp2/lib/includes")
-       .include(&include)
-       .file("nghttp2/lib/nghttp2_buf.c")
-       .file("nghttp2/lib/nghttp2_callbacks.c")
-       .file("nghttp2/lib/nghttp2_debug.c")
-       .file("nghttp2/lib/nghttp2_frame.c")
-       .file("nghttp2/lib/nghttp2_hd.c")
-       .file("nghttp2/lib/nghttp2_hd_huffman.c")
-       .file("nghttp2/lib/nghttp2_hd_huffman_data.c")
-       .file("nghttp2/lib/nghttp2_helper.c")
-       .file("nghttp2/lib/nghttp2_http.c")
-       .file("nghttp2/lib/nghttp2_map.c")
-       .file("nghttp2/lib/nghttp2_mem.c")
-       .file("nghttp2/lib/nghttp2_npn.c")
-       .file("nghttp2/lib/nghttp2_option.c")
-       .file("nghttp2/lib/nghttp2_outbound_item.c")
-       .file("nghttp2/lib/nghttp2_pq.c")
-       .file("nghttp2/lib/nghttp2_priority_spec.c")
-       .file("nghttp2/lib/nghttp2_queue.c")
-       .file("nghttp2/lib/nghttp2_rcbuf.c")
-       .file("nghttp2/lib/nghttp2_session.c")
-       .file("nghttp2/lib/nghttp2_stream.c")
-       .file("nghttp2/lib/nghttp2_submit.c")
-       .file("nghttp2/lib/nghttp2_version.c")
-       .warnings(false)
-       .define("NGHTTP2_STATICLIB", None)
-       .define("HAVE_NETINET_IN", None)
-       .out_dir(&lib);
+        .include(&include)
+        .file("nghttp2/lib/nghttp2_buf.c")
+        .file("nghttp2/lib/nghttp2_callbacks.c")
+        .file("nghttp2/lib/nghttp2_debug.c")
+        .file("nghttp2/lib/nghttp2_frame.c")
+        .file("nghttp2/lib/nghttp2_hd.c")
+        .file("nghttp2/lib/nghttp2_hd_huffman.c")
+        .file("nghttp2/lib/nghttp2_hd_huffman_data.c")
+        .file("nghttp2/lib/nghttp2_helper.c")
+        .file("nghttp2/lib/nghttp2_http.c")
+        .file("nghttp2/lib/nghttp2_map.c")
+        .file("nghttp2/lib/nghttp2_mem.c")
+        .file("nghttp2/lib/nghttp2_npn.c")
+        .file("nghttp2/lib/nghttp2_option.c")
+        .file("nghttp2/lib/nghttp2_outbound_item.c")
+        .file("nghttp2/lib/nghttp2_pq.c")
+        .file("nghttp2/lib/nghttp2_priority_spec.c")
+        .file("nghttp2/lib/nghttp2_queue.c")
+        .file("nghttp2/lib/nghttp2_rcbuf.c")
+        .file("nghttp2/lib/nghttp2_session.c")
+        .file("nghttp2/lib/nghttp2_stream.c")
+        .file("nghttp2/lib/nghttp2_submit.c")
+        .file("nghttp2/lib/nghttp2_version.c")
+        .warnings(false)
+        .define("NGHTTP2_STATICLIB", None)
+        .define("HAVE_NETINET_IN", None)
+        .out_dir(&lib);
 
     if target.contains("windows") {
         // Apparently MSVC doesn't have `ssize_t` defined as a type
         if target.contains("msvc") {
             match &env::var("CARGO_CFG_TARGET_POINTER_WIDTH").unwrap()[..] {
-                "64" => { cfg.define("ssize_t", "int64_t"); }
-                "32" => { cfg.define("ssize_t", "int32_t"); }
+                "64" => {
+                    cfg.define("ssize_t", "int64_t");
+                }
+                "32" => {
+                    cfg.define("ssize_t", "int32_t");
+                }
                 s => panic!("unknown pointer size: {}", s),
             }
         }
     } else {
-       cfg.define("HAVE_ARPA_INET_H", None);
+        cfg.define("HAVE_ARPA_INET_H", None);
     }
     cfg.compile("nghttp2");
 
@@ -79,5 +83,6 @@ fn main() {
     fs::copy(
         "nghttp2/lib/includes/nghttp2/nghttp2.h",
         include.join("nghttp2/nghttp2.h"),
-    ).unwrap();
+    )
+    .unwrap();
 }
