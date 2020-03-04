@@ -3,9 +3,6 @@
 A common library for linking `nghttp2` to rust programs (also known as
 libnghttp2).
 
-[![Build Status](https://travis-ci.com/alexcrichton/nghttp2-rs.svg?branch=master)](https://travis-ci.com/alexcrichton/nghttp2-rs)
-[![Build status](https://ci.appveyor.com/api/projects/status/6au13yb0fkfckpjn/branch/master?svg=true)](https://ci.appveyor.com/project/alexcrichton/nghttp2-rs/branch/master)
-
 ## Generating bindings
 
 Before `bindgen`:
