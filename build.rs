@@ -34,6 +34,7 @@ fn main() {
         .file("nghttp2/lib/nghttp2_hd_huffman_data.c")
         .file("nghttp2/lib/nghttp2_helper.c")
         .file("nghttp2/lib/nghttp2_http.c")
+        .file("nghttp2/lib/nghttp2_ksl.c")
         .file("nghttp2/lib/nghttp2_map.c")
         .file("nghttp2/lib/nghttp2_mem.c")
         .file("nghttp2/lib/nghttp2_npn.c")
