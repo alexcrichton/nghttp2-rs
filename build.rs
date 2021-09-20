@@ -4,17 +4,43 @@ use std::env;
 use std::fs;
 use std::path::PathBuf;
 
-const VERSION: &str = "1.33.90";
-
 fn main() {
     let target = env::var("TARGET").unwrap();
     let out_dir = PathBuf::from(env::var_os("OUT_DIR").unwrap());
+    let lib_version = env::var("CARGO_PKG_VERSION")
+        .unwrap()
+        .split('+')
+        .nth(1)
+        .unwrap()
+        .to_string();
+    let major = lib_version
+        .split('.')
+        .nth(0)
+        .unwrap()
+        .parse::<u32>()
+        .unwrap();
+    let minor = lib_version
+        .split('.')
+        .nth(1)
+        .unwrap()
+        .parse::<u32>()
+        .unwrap();
+    let patch = lib_version
+        .split('.')
+        .nth(2)
+        .unwrap()
+        .parse::<u32>()
+        .unwrap();
     let ver = fs::read_to_string("nghttp2/lib/includes/nghttp2/nghttp2ver.h.in")
         .unwrap()
-        .replace("@PACKAGE_VERSION@", VERSION)
-        .replace("@PACKAGE_VERSION_NUM@", "0x01214a");
+        .replace("@PACKAGE_VERSION@", &lib_version)
+        .replace(
+            "@PACKAGE_VERSION_NUM@",
+            &format!("0x{:02x}{:02x}{:02x}", major, minor, patch),
+        );
 
     let install = out_dir.join("i");
+
     let include = install.join("include");
     let lib = install.join("lib");
     let pkgconfig = lib.join("pkgconfig");
@@ -34,7 +60,6 @@ fn main() {
         .file("nghttp2/lib/nghttp2_hd_huffman_data.c")
         .file("nghttp2/lib/nghttp2_helper.c")
         .file("nghttp2/lib/nghttp2_http.c")
-        .file("nghttp2/lib/nghttp2_ksl.c")
         .file("nghttp2/lib/nghttp2_map.c")
         .file("nghttp2/lib/nghttp2_mem.c")
         .file("nghttp2/lib/nghttp2_npn.c")
@@ -79,7 +104,7 @@ fn main() {
         .replace("@exec_prefix@", "")
         .replace("@libdir@", lib.to_str().unwrap())
         .replace("@includedir@", include.to_str().unwrap())
-        .replace("@VERSION@", VERSION);
+        .replace("@VERSION@", &lib_version);
     fs::write(pkgconfig.join("libnghttp2.pc"), pc).unwrap();
     fs::copy(
         "nghttp2/lib/includes/nghttp2/nghttp2.h",
