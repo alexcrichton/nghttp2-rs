@@ -1,10 +1,24 @@
+// modified by Maxime Devos (2022) (see 4(b) in LICENSE-APACHE)
+
+#[cfg(feature = "vendored")]
 extern crate cc;
 
 use std::env;
 use std::fs;
 use std::path::PathBuf;
 
-fn main() {
+#[cfg(not(feature = "vendored"))]
+extern crate pkg_config;
+
+// use system copy of nghttp2
+#[cfg(not(feature = "vendored"))]
+fn main_system() {
+    pkg_config::Config::new().atleast_version("1.44.0").probe("libnghttp2").unwrap();
+}
+
+// use bundled copy of nghttp2
+#[cfg(feature = "vendored")]
+fn main_vendored() {
     let target = env::var("TARGET").unwrap();
     let out_dir = PathBuf::from(env::var_os("OUT_DIR").unwrap());
     let lib_version = env::var("CARGO_PKG_VERSION")
@@ -111,4 +125,12 @@ fn main() {
         include.join("nghttp2/nghttp2.h"),
     )
     .unwrap();
+}
+
+fn main() {
+    #[cfg(not(feature = "vendored"))]
+    main_system();
+
+    #[cfg(feature = "vendored")]
+    main_vendored();
 }
