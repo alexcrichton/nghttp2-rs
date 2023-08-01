@@ -51,9 +51,11 @@ fn main() {
     let mut cfg = cc::Build::new();
     cfg.include("nghttp2/lib/includes")
         .include(&include)
+        .file("nghttp2/lib/sfparse.c")
         .file("nghttp2/lib/nghttp2_buf.c")
         .file("nghttp2/lib/nghttp2_callbacks.c")
         .file("nghttp2/lib/nghttp2_debug.c")
+        .file("nghttp2/lib/nghttp2_extpri.c")
         .file("nghttp2/lib/nghttp2_frame.c")
         .file("nghttp2/lib/nghttp2_hd.c")
         .file("nghttp2/lib/nghttp2_hd_huffman.c")
