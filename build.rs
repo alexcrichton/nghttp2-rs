@@ -75,9 +75,12 @@ fn main() {
         .file("nghttp2/lib/nghttp2_stream.c")
         .file("nghttp2/lib/nghttp2_submit.c")
         .file("nghttp2/lib/nghttp2_version.c")
+        .file("nghttp2/lib/nghttp2_ratelim.c")
+        .file("nghttp2/lib/nghttp2_time.c")
         .warnings(false)
         .define("NGHTTP2_STATICLIB", None)
         .define("HAVE_NETINET_IN", None)
+        .define("HAVE_TIME_H", None)
         .out_dir(&lib);
 
     if target.contains("windows") {
