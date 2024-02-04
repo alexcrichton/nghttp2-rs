@@ -1,7 +1,9 @@
 # nghttp2-sys
 
 A common library for linking `nghttp2` to rust programs (also known as
-libnghttp2).
+libnghttp2).  By default, it uses a bundled copy of `libnghttp2`.  If that
+is not desired, you can use the system's `libnghttp2` instead by not enabling
+the default `vendored` feature.
 
 ## Generating bindings
 
@@ -42,6 +44,7 @@ This project is licensed under either of
 
 at your option.
 
+Modified by Maxime Devos (2022) (see 4(b) in LICENSE-APACHE) (TODO: is there a less intrusive way to do this?)
 ### Contribution
 
 Unless you explicitly state otherwise, any contribution intentionally submitted
