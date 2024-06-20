@@ -1,3 +1,4 @@
+# modified by Maxime Devos (2022) (see 4(b) in LICENSE-APACHE)
 [package]
 name = "libnghttp2-sys"
 version = "0.1.10+1.61.0"
@@ -21,4 +22,9 @@ members = ['systest']
 libc = '0.2'
 
 [build-dependencies]
-cc = "1.0.24"
+cc = { version = "1.0.24", optional = true }
+pkg-config = { version = "0.3.19" }
+
+[features]
+vendored = ["cc"]
+default = ["vendored"] # for backwards compatibility
