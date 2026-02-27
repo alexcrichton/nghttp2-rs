@@ -8,4 +8,5 @@ libnghttp2-sys = { path = '..' }
 libc = "0.2"
 
 [build-dependencies]
-ctest = "0.2.0"
+ctest = "0.5.0"
+cc = "1.2.56"
