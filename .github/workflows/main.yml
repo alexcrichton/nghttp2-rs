@@ -23,21 +23,21 @@ jobs:
             os: windows-latest
             rust: stable
     steps:
-    - uses: actions/checkout@v1
-      with:
-        submodules: true
-    - name: Install Rust (rustup)
-      run: rustup update ${{ matrix.rust }} --no-self-update && rustup default ${{ matrix.rust }}
-      shell: bash
-    - run: cargo test
+      - uses: actions/checkout@v1
+        with:
+          submodules: true
+      - name: Install Rust (rustup)
+        run: rustup update ${{ matrix.rust }} --no-self-update && rustup default ${{ matrix.rust }}
+        shell: bash
+      - run: cargo test
 
   rustfmt:
     name: Rustfmt
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-      with:
-        submodules: true
-    - name: Install Rust
-      run: rustup update stable && rustup default stable && rustup component add rustfmt
-    - run: cargo fmt -- --check
+      - uses: actions/checkout@v1
+        with:
+          submodules: true
+      - name: Install Rust
+        run: rustup update stable && rustup default stable && rustup component add rustfmt
+      - run: cargo fmt -- --check
