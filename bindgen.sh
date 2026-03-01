@@ -35,5 +35,6 @@ bindgen \
   -- \
   -I "${ROOT}/nghttp2/lib/includes"
 
-# Prepend `#![allow(bad_style)]` to the bindings.
+# Disable lints for the generated bindings
 sed -i '1i#![allow(bad_style)]' "${ROOT}/src/lib.rs"
+sed -i '2i#![allow(rustdoc::bare_urls)]' "${ROOT}/src/lib.rs"
