@@ -31,6 +31,20 @@ jobs:
         shell: bash
       - run: cargo test
 
+  check-bindgen:
+    name: Check bindgen
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+        with:
+          submodules: true
+      - name: Install Rust
+        run: rustup update stable && rustup default stable
+      - name: Install bindgen
+        run: cargo install bindgen-cli
+      - name: Verify bindings
+        run: mv src/lib.rs src/lib.rs.orig && ./bindgen.sh && diff src/lib.rs src/lib.rs.orig
+
   rustfmt:
     name: Rustfmt
     runs-on: ubuntu-latest
