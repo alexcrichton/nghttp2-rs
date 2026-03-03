@@ -21,4 +21,4 @@ members = ['systest']
 libc = '0.2'
 
 [build-dependencies]
-cc = "1.0.24"
+cc = "1.2.56"
