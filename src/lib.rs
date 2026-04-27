@@ -1156,7 +1156,7 @@ unsafe extern "C" {
     pub fn nghttp2_option_set_max_continuations(option: *mut nghttp2_option, val: usize);
 }
 unsafe extern "C" {
-    #[doc = " @function\n\n This function sets the rate limit for the \"glitches\", the\n suspicious activities from a remote endpoint.  It is a token-bucket\n based rate limiter.  |burst| specifies the number of tokens that is\n initially available.  The maximum number of tokens is capped to\n this value.  |rate| specifies the number of tokens that are\n regenerated per second.  When a suspicious activity is detected,\n some amount of tokens are consumed.  If there is no token\n available, GOAWAY is sent to tear down the connection.  |burst| and\n |rate| default to 1000 and 33 respectively."]
+    #[doc = " @function\n\n This function sets the rate limit for the \"glitches\", the\n suspicious activities from a remote endpoint.  It is a token-bucket\n based rate limiter.  |burst| specifies the number of tokens that is\n initially available.  The maximum number of tokens is capped to\n this value.  |rate| specifies the number of tokens that are\n regenerated per second.  When a suspicious activity is detected,\n some amount of tokens are consumed.  If there is no token\n available, GOAWAY is sent to tear down the connection.  |burst| and\n |rate| default to 10000 and 330 respectively."]
     pub fn nghttp2_option_set_glitch_rate_limit(option: *mut nghttp2_option, burst: u64, rate: u64);
 }
 unsafe extern "C" {
