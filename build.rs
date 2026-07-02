@@ -1,8 +1,24 @@
 extern crate cc;
+extern crate pkg_config;
 
 use std::env;
 use std::fs;
 use std::path::PathBuf;
+
+fn try_pkg_config(min_version: &str) -> Result<PathBuf, Box<dyn std::error::Error>> {
+    let lib = pkg_config::Config::new()
+        .atleast_version(min_version)
+        .cargo_metadata(true)
+        .probe("libnghttp2")?;
+
+    let include = lib
+        .include_paths
+        .into_iter()
+        .next()
+        .ok_or("pkg-config returned no include paths")?;
+    let root = include.parent().map(|p| p.to_path_buf()).unwrap_or(include);
+    Ok(root)
+}
 
 fn main() {
     let target = env::var("TARGET").unwrap();
@@ -13,6 +29,18 @@ fn main() {
         .nth(1)
         .unwrap()
         .to_string();
+
+    if env::var("NGHTTP2_NO_VENDOR").as_deref() == Ok("1") {
+        match try_pkg_config(&lib_version) {
+            Ok(root) => println!("cargo:root={}", root.display()),
+            Err(err) => panic!(
+                "NGHTTP2_NO_VENDOR set but could not find libnghttp2 >= {}: {}",
+                lib_version, err
+            ),
+        }
+        return;
+    }
+
     let major = lib_version
         .split('.')
         .nth(0)
