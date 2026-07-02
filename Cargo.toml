@@ -22,3 +22,4 @@ libc = '0.2'
 
 [build-dependencies]
 cc = "1.2.56"
+pkg-config = "0.3"

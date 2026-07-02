@@ -12,6 +12,15 @@ The script requires that you have an up-to-date version of the bindgen CLI.
 The bindings are checked in CI to ensure that what exists in git matches the
 output of the script.
 
+## Building against a system libnghttp2
+
+By default this crate compiles and statically links a bundled copy of nghttp2.
+To link against the system library instead, set the environment variable:
+
+```sh
+NGHTTP2_NO_VENDOR=1
+```
+
 # License
 
 This project is licensed under either of
